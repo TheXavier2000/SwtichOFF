@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deshabilitador de Hosts</title>
+    <link rel="stylesheet" href="../CSS/styles.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="../CSS/logoACC.png" alt="Logo Empresarial">
+        </div>
+        <div class="title">
+            <h1>Deshabilitador de Hosts</h1>
+        </div>
+        <div class="description">
+            <h3>Sube un archivo JSON para deshabilitar los hosts en Zabbix</h3>
+        </div>
+        <div class="form-container">
+            <div id="drop-area">
+            <input type="file" id="fileInput" accept=".json" hidden>
+            <button type="button" id="uploadButton">Cargar archivo JSON</button>
+
+                <input type="file" id="fileElem" style="display:none;" />
+                <p>Arrastra y suelta un archivo JSON aquí o haz clic para seleccionar uno.</p>
+            </div>
+        </div>
+        <button type="button" id="process-hosts" disabled>Procesar Hosts</button>
+        <div id="status-message-container">
+            <span id="status-message"></span>
+            <img id="loading-icon" src="../CSS/loading.gif" alt="Loading..." style="display:none;">
+        </div>
+    </div>
+    <script src="../scripts/fileHandler.js" defer></script>
+    <script src="../scripts/main.js" defer></script>
+    <script src="../scripts/ProcessHost.js" defer></script>
+    <script src="../scripts/removeTemplates.js" defer></script>
+</body>
+</html>
