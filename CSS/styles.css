@@ -16,6 +16,34 @@ body, html {
     overflow: hidden; /* Oculta el desbordamiento */
 }
 
+/* Estilo para el pie de página */
+footer {
+    text-align: center; /* Alineación del texto al centro */
+    margin-top: 3px; /* Espaciado superior */
+    padding: 0; /* Sin espaciado interno */
+    color: #fff; /* Texto blanco */
+    font-size: 10px; /* Tamaño de fuente */
+}
+
+/* Estilo para los párrafos en el pie de página */
+footer p {
+    margin: 0; /* Sin margen */
+    display: flex; /* Diseño flexible */
+    justify-content: center; /* Centra el texto horizontalmente */
+    align-items: center; /* Centra el texto verticalmente */
+    font-size: 12px; /* Tamaño de fuente general */
+}
+
+/* Estilo para la firma en el pie de página */
+footer .firma {
+    display: block; /* Muestra el elemento como bloque */
+    margin-top: 0; /* Sin margen superior */
+    font-family: 'Great Vibes', cursive; /* Fuente cursiva */
+    font-size: 14px; /* Tamaño de fuente */
+    color: #fff; /* Texto blanco */
+    margin-left: 10px; /* Espaciado a la izquierda */
+}
+
 .logo {
     position: absolute; /* Posiciona el elemento de manera absoluta */
     top: 20px; /* 20px desde la parte superior */
@@ -46,7 +74,10 @@ body, html {
     max-width: 600px; /* Ancho máximo del contenedor */
     width: 100%; /* Ancho al 100% */
     box-sizing: border-box; /* Incluye padding y border en el ancho total */
-    cursor: pointer; /* Cursor pointer */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra los elementos horizontalmente */
+    justify-content: center; /* Centra los elementos verticalmente */
 }
 
 /* Estilo para el formulario */
@@ -156,45 +187,65 @@ form {
 button {
     padding: 10px 20px; /* Espaciado interno */
     border: none; /* Sin borde */
-    border-radius: 4px; /* Bordes redondeados */
+    border-radius: 6px; /* Bordes redondeados */
     font-size: 16px; /* Tamaño de fuente */
     cursor: pointer; /* Cursor pointer */
-    transition: background-color 0.3s ease; /* Transición suave */
+    transition: all 0.3s ease; /* Transiciones suaves */
+    margin-top: 10px; /* Espaciado superior */
+    width: 500px; /* Ancho fijo */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+}
+
+/* Estilo para el botón de carga */
+#uploadButton {
+    background-color: #28a745; /* Fondo verde */
+    color: white; /* Texto blanco */
+    padding: 10px 20px; /* Espaciado interno */
+    border: none; /* Sin borde */
+    border-radius: 6px; /* Bordes redondeados */
+    font-size: 16px; /* Tamaño de fuente */
+    cursor: pointer; /* Cursor pointer */
+    transition: all 0.3s ease; /* Transiciones suaves */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra ligera */
     margin-top: 10px; /* Espaciado superior */
 }
 
-/* Estilo para el botón de generar informe */
-#generate-report {
+.button-container {
+    text-align: center; /* Centra horizontalmente el contenido en el contenedor */
+}
+
+/* Estilo para el botón de procesar hosts */
+#process-hosts {
     background-color: #4a90e2; /* Fondo azul */
     color: white; /* Texto blanco */
     display: block; /* Ocupa toda la anchura disponible */
     max-width: 300px; /* Ancho máximo */
     margin: 10px auto; /* Centra el botón horizontalmente */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
 }
 
 /* Cambiar el color del botón al pasar el ratón */
-#generate-report:hover {
-    background-color: #357abd; /* Fondo azul oscuro al pasar el ratón */
+#uploadButton:hover,
+#process-hosts:hover {
+    background-color: #0056b3; /* Fondo azul oscuro para ambos botones */
+    transform: scale(1.05); /* Agrandar ligeramente */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
 }
 
-/* Estilo para el enlace de descarga */
-#download-report {
-    display: inline-block; /* Alineación en línea */
-    padding: 10px 20px; /* Espaciado interno */
-    border-radius: 4px; /* Bordes redondeados */
-    background-color: #4a90e2; /* Fondo azul */
-    color: white; /* Texto blanco */
-    text-decoration: none; /* Sin subrayado */
-    text-align: center; /* Alineación del texto */
-    margin-top: 10px; /* Espaciado superior */
-    max-width: 300px; /* Ancho máximo */
-    display: block; /* Ocupa toda la anchura disponible */
-    margin: 10px auto; /* Centra el enlace horizontalmente */
+/* Efecto al hacer clic en el botón */
+#uploadButton:active,
+#process-hosts:active {
+    transform: scale(0.95); /* Efecto de reducir el tamaño ligeramente */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra más ligera */
 }
 
-/* Cambiar el color del enlace al pasar el ratón */
-#download-report:hover {
-    background-color: #357abd; /* Fondo azul oscuro al pasar el ratón */
+/* Estilo para el botón deshabilitado */
+#process-hosts:disabled {
+    background-color: #72777e; /* Fondo gris claro */
+    color: #111111; /* Texto gris oscuro */
+    cursor: not-allowed; /* Cambia el cursor a una cruz */
+    box-shadow: none; /* Elimina la sombra */
+    transform: none; /* Elimina el efecto de transformación */
 }
 
 /* Estilo para los mensajes de estado */

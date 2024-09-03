@@ -5,11 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Deshabilitador de Hosts</title>
     <link rel="stylesheet" href="../CSS/styles.css">
+    <link rel="shortcut icon" href="https://cdn.icon-icons.com/icons2/1378/PNG/512/usertrashfull_92826.png" type="image/png">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
@@ -32,14 +34,17 @@
             </div>
         </div>
         <button type="button" id="process-hosts" disabled>Procesar Hosts</button>
-        <div id="status-message-container">
-            <span id="status-message"></span>
-            <img id="loading-icon" src="../CSS/loading.gif" alt="Loading..." style="display:none;">
-        </div>
+
+        <footer>
+            <p>Azteca Comunicaciones &reg; 2024 <span class="firma">V L</span></p>
+        </footer>
+
     </div>
     <script src="../scripts/fileHandler.js" defer></script>
     <script src="../scripts/main.js" defer></script>
     <script src="../scripts/ProcessHost.js" defer></script>
-    <script src="../scripts/removeTemplates.js" defer></script>
+
+
+
 </body>
 </html>

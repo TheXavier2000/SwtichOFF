@@ -1,22 +1,18 @@
-// fileHandler.js
 var jsonObject = null;  // Declaración global
 var hostIds = [];  // Definición global para almacenar los IDs de los hosts
 
 document.addEventListener('DOMContentLoaded', () => {
     let dropArea = document.getElementById('drop-area');
     let fileElem = document.getElementById('fileElem');
-    let statusMessage = document.getElementById('status-message');
+    let processButton = document.getElementById('process-hosts'); // Botón para procesar
+    let uploadButton = document.getElementById('uploadButton'); // Botón para cargar
 
-    if (dropArea) {
-        dropArea.addEventListener('click', () => {
+    if (uploadButton) {
+        uploadButton.addEventListener('click', () => {
             if (fileElem) {
                 fileElem.click();
-            } else {
-                console.error('Elemento de entrada de archivo no encontrado.');
             }
         });
-    } else {
-        console.error('Área de arrastrar y soltar no encontrada.');
     }
 
     if (fileElem) {
@@ -41,6 +37,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (dropArea) {
         dropArea.addEventListener('drop', handleDrop, false);
+    }
+
+    if (processButton) {
+        processButton.addEventListener('click', processJson);  // Procesar al hacer clic
     }
 
     function preventDefaults(e) {
@@ -70,57 +70,91 @@ document.addEventListener('DOMContentLoaded', () => {
         let file = files[0];
         if (file && file.type === 'application/json') {
             let reader = new FileReader();
-
+    
+            // Deshabilitar el botón de cargar archivo
+            uploadButton.disabled = true;
+            processButton.disabled = true; // Deshabilitar el botón de procesar mientras se carga el JSON
+    
             reader.onload = function(event) {
                 try {
                     let jsonString = event.target.result;
                     jsonObject = JSON.parse(jsonString); // Almacenar JSON en variable global
-
-                    statusMessage.textContent = "Archivo JSON procesado correctamente.";
-                    statusMessage.style.color = "green";
-                    console.log('JSON cargado:', jsonObject);
-                    document.dispatchEvent(new Event('jsonObjectReady')); // Disparar el evento
-
-                    // Llamar a la función de procesamiento después de cargar el JSON
-                    processJson();
+    
+                    alert("Archivo JSON cargado correctamente. Ahora puedes procesar los datos.");
+                    processButton.disabled = false; // Habilitar el botón de procesar
+                    
                 } catch (error) {
-                    statusMessage.textContent = "Error al procesar el archivo JSON.";
-                    statusMessage.style.color = "red";
+                    alert("Error al cargar el archivo JSON.");
                     console.error('Error al analizar el JSON:', error);
+                } finally {
+                    // Volver a habilitar el botón de carga después de procesar el archivo
+                    uploadButton.disabled = false;
                 }
             };
-
+    
             reader.readAsText(file);
         } else {
-            statusMessage.textContent = "Por favor, selecciona un archivo JSON válido.";
-            statusMessage.style.color = "red";
+            alert("Por favor, selecciona un archivo JSON válido.");
         }
     }
+    
 
     function processJson() {
-        console.log('Tipo de jsonObject:', typeof jsonObject); // Verifica el tipo
-        console.log('Es un array?:', Array.isArray(jsonObject)); // Verifica si es un array
-    
-        if (jsonObject && Array.isArray(jsonObject)) {
-            jsonObject.forEach(item => {
+        if (!jsonObject) {
+            alert("No hay un archivo JSON cargado para procesar.");
+            return;
+        }
+
+        console.log('Tipo de jsonObject:', typeof jsonObject);
+        console.log('Es un array?:', Array.isArray(jsonObject));
+
+        if (Array.isArray(jsonObject)) {
+            // Limpiar el array de hostIds
+            hostIds = [];
+
+            // Obtener los IDs de los hosts
+            let hostPromises = jsonObject.map(item => {
                 if (item && item.Host) {
                     let hostName = item.Host;
                     console.log('Nombre del host:', hostName);
-                    getHostAndTemplates(hostName);
+                    return getHostAndTemplates(hostName);
                 } else {
                     console.error('El objeto del JSON no contiene la clave "Host".');
+                    return Promise.resolve(); // Para continuar con el siguiente ítem
                 }
             });
 
-            if (typeof updateHostGroupsAndStatus === 'function') {
-                hostIds.forEach(hostId => {
-                    updateHostGroupsAndStatus(hostId)
-                        .then(() => console.log(`Host ${hostId} actualizado exitosamente.`))
-                        .catch(error => console.error(`Error actualizando el host ${hostId}:`, error));
-                });
-            } else {
-                console.error("La función updateHostGroupsAndStatus no está disponible.");
-            }
+            // Esperar a que se obtengan todos los hostIds antes de procesar
+            Promise.all(hostPromises).then(() => {
+                if (typeof updateHostGroupsAndStatus === 'function') {
+                    let updatePromises = hostIds.map(hostId => {
+                        return updateHostGroupsAndStatus(hostId)
+                            .then(() => console.log(`Host ${hostId} actualizado exitosamente.`))
+                            .catch(error => console.error(`Error actualizando el host ${hostId}:`, error));
+                    });
+
+                    // Notificar cuando todos los hosts hayan sido actualizados
+                    Promise.all(updatePromises)
+                        .then(() => {
+                            alert('Todas las actualizaciones de hosts se han completado.');
+
+                            // Recargar la página después de 10 segundos
+                            setTimeout(() => {
+                                location.reload(); // Recargar la página
+                            }, 10000); // 10,000 ms = 10 segundos
+
+                        })
+                        .catch(error => {
+                            alert('Se produjo un error durante la actualización de los hosts: ' + error.message);
+                            console.error('Error durante la actualización de hosts:', error);
+                        });
+
+                } else {
+                    console.error("La función updateHostGroupsAndStatus no está disponible.");
+                }
+            }).catch(error => {
+                console.error('Error al obtener los IDs de los hosts:', error);
+            });
 
         } else {
             console.error('El JSON no es una lista válida.');
@@ -128,7 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function getHostAndTemplates(hostName) {
-        obtainHostIdFromName(hostName)
+        return obtainHostIdFromName(hostName)
             .then(hostId => {
                 if (hostId) {
                     hostIds.push(hostId);  // Añade el hostId al array global
@@ -170,4 +204,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return null;
         }
     }
+
+    
 });

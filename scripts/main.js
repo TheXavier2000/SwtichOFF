@@ -13,9 +13,6 @@ $(document).ready(async function() {
 
                 // Cargar scripts necesarios en orden
 
-                await $.getScript("../scripts/removeTemplates.js");
-                console.log("removeTemplates.js cargado correctamente.");
-
                 await $.getScript("../scripts/ProcessHost.js");
                 console.log("ProcessHost.js cargado correctamente.");
 
